@@ -11,7 +11,7 @@ export default function CartIcon() {
 
   // On homepage, shift left to sit beside the "Buy Now" button
   const positionClass = pathname === "/"
-    ? "fixed top-6 right-28 z-[70]"
+    ? "fixed top-6 right-36 z-[70]"
     : "fixed top-6 right-6 z-[70]";
 
   return (
