@@ -60,21 +60,21 @@ export default function FinalCTA() {
   return (
     <section
       ref={sectionRef}
-      data-guide="FinalCTA"
-      className="relative z-10 -mt-[100vh] flex min-h-screen w-full flex-col items-center justify-start gap-12 bg-black pt-8 pb-12"
+
+      className="relative z-10 flex min-h-screen w-full flex-col items-center justify-start gap-12 bg-black pt-8 pb-12"
     >
       <h2
         ref={titleRef}
         className="text-center text-5xl font-bold tracking-tight md:text-7xl"
       >
-        Experience NOVA
+        Experience PROTEA
       </h2>
       <a
         ref={buttonRef}
         href="#"
         className="rounded-full border-2 border-white bg-transparent px-10 py-4 text-lg font-medium text-white transition-colors hover:bg-white hover:text-black"
       >
-        Pre-order Now
+        Order Now
       </a>
     </section>
   );

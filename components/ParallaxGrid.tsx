@@ -51,8 +51,8 @@ export default function ParallaxGrid() {
   return (
     <section
       ref={sectionRef}
-      data-guide="ParallaxGrid"
-      className="relative min-h-screen w-full bg-[#0a0a0a] py-12 md:py-16"
+
+      className="relative w-full bg-[#0a0a0a] py-12 md:py-16"
     >
       <div
         ref={containerRef}

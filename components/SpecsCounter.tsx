@@ -7,9 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const SPECS = [
-  { value: 48, suffix: "h", label: "Battery" },
-  { value: 3, suffix: "g", label: "Weight" },
-  { value: 360, suffix: "°", label: "Audio" },
+  { value: 20, suffix: "g", label: "Protein" },
+  { value: 70, suffix: "", label: "Calories" },
+  { value: 0, suffix: "g", label: "Sugar" },
 ];
 
 export default function SpecsCounter() {
@@ -54,7 +54,7 @@ export default function SpecsCounter() {
   return (
     <section
       ref={sectionRef}
-      data-guide="SpecsCounter"
+
       className="relative flex min-h-screen w-full flex-col items-center justify-center gap-16 bg-black py-12 md:flex-row md:gap-24"
     >
       {SPECS.map((spec, i) => (

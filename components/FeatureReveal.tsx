@@ -7,9 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const HEADLINES = [
-  "Crafted from Titanium",
-  "48 Hours of Battery",
-  "Spatial Audio Redefined",
+  "Crafted from Clean Ingredients",
+  "Zero Sugar. Full Flavor.",
+  "Protein Redefined",
 ];
 
 export default function FeatureReveal() {
@@ -75,14 +75,14 @@ export default function FeatureReveal() {
   return (
     <section
       ref={sectionRef}
-      data-guide="FeatureReveal"
+
       className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black"
     >
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
           className="h-full w-full object-cover"
-          src="/featurereveal.mp4"
+          src="/SpinningCan.mp4"
           muted
           playsInline
           preload="auto"
