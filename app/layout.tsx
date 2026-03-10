@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { CartProvider } from "@/context/CartContext";
+import CartIcon from "@/components/CartIcon";
+import CartPanel from "@/components/CartPanel";
 
 export const metadata: Metadata = {
   title: "PROTEA — Pure Protein. Zero Compromise.",
@@ -17,6 +19,8 @@ export default function RootLayout({
     <html lang="en" className="antialiased">
       <body className="min-h-screen bg-black text-white font-sans">
         <CartProvider>
+          <CartIcon />
+          <CartPanel />
           <SmoothScroll>{children}</SmoothScroll>
         </CartProvider>
       </body>

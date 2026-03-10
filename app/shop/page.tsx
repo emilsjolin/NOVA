@@ -5,8 +5,6 @@ import gsap from "gsap";
 import { PRODUCTS, Product } from "@/lib/products";
 import PageHero from "@/components/PageHero";
 import ProductModal from "@/components/ProductModal";
-import CartIcon from "@/components/CartIcon";
-import CartPanel from "@/components/CartPanel";
 import BlobMenu from "@/components/BlobMenu";
 
 export default function ShopPage() {
@@ -26,8 +24,6 @@ export default function ShopPage() {
   return (
     <main>
       <BlobMenu />
-      <CartIcon />
-      <CartPanel />
 
       <PageHero heading="The Collection" />
 
