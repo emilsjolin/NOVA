@@ -7,11 +7,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const PANELS = [
-  { color: "from-violet-900 to-indigo-950", text: "Design" },
-  { color: "from-amber-900 to-orange-950", text: "Sound" },
-  { color: "from-emerald-900 to-teal-950", text: "Comfort" },
-  { color: "from-rose-900 to-pink-950", text: "Technology" },
-  { color: "from-slate-800 to-slate-950", text: "NOVA" },
+  { color: "from-violet-900 to-indigo-950", text: "Taste" },
+  { color: "from-amber-900 to-orange-950", text: "Ingredients" },
+  { color: "from-emerald-900 to-teal-950", text: "Design" },
+  { color: "from-rose-900 to-pink-950", text: "Nutrition" },
+  { color: "from-slate-800 to-slate-950", text: "PROTEA" },
 ];
 
 export default function HorizontalGallery() {
@@ -34,6 +34,19 @@ export default function HorizontalGallery() {
     // Scroll distance multiplier: higher = more vertical scroll needed = slower horizontal movement
     const scrollDistanceMultiplier = 4.5;
 
+    // Remap linear scroll progress so panels slow down when centered.
+    // Uses a sum-of-sines approach: each segment eases with smoothstep,
+    // creating a plateau at each panel center.
+    const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+    const remapProgress = (p: number) => {
+      const transitions = count - 1;
+      const seg = 1 / transitions;
+      const idx = Math.min(Math.floor(p / seg), transitions - 1);
+      const local = Math.min((p - idx * seg) / seg, 1);
+      return (idx + smoothstep(local)) / transitions;
+    };
+
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: section,
@@ -42,17 +55,10 @@ export default function HorizontalGallery() {
         pin: true,
         scrub: 2,
         scroller: document.body,
-      });
-
-      gsap.to(panels, {
-        xPercent: -100 * (count - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${wrapper.offsetWidth * scrollDistanceMultiplier}`,
-          scrub: 2,
-          scroller: document.body,
+        onUpdate: (self) => {
+          const eased = remapProgress(self.progress);
+          const xPercent = -eased * 100 * (count - 1);
+          gsap.set(panels, { xPercent });
         },
       });
     }, section);
@@ -63,7 +69,7 @@ export default function HorizontalGallery() {
   return (
     <section
       ref={sectionRef}
-      data-guide="HorizontalGallery"
+
       className="relative h-screen w-full overflow-hidden bg-black"
     >
       <div ref={wrapperRef} className="absolute inset-0">
@@ -76,7 +82,7 @@ export default function HorizontalGallery() {
             <div
               key={i}
               data-panel
-              data-guide={`Gallery card: ${panel.text}`}
+
               className={`flex h-full w-screen flex-shrink-0 items-center justify-center bg-gradient-to-br ${panel.color}`}
             >
               <span className="text-5xl font-bold text-white md:text-6xl">

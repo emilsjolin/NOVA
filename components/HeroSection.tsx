@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,17 +9,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const title = titleRef.current;
+    const logo = logoRef.current;
     const subtitle = subtitleRef.current;
-    if (!section || !title || !subtitle) return;
+    if (!section || !logo || !subtitle) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(title, { willChange: "transform", scale: 3 });
+      gsap.set(logo, { willChange: "transform", scale: 3 });
       gsap.set(subtitle, { willChange: "opacity", opacity: 0 });
 
       ScrollTrigger.create({
@@ -30,7 +31,7 @@ export default function HeroSection() {
         scroller: document.body,
         onUpdate: (self) => {
           const p = self.progress;
-          gsap.set(title, { scale: 3 - 2 * p });
+          gsap.set(logo, { scale: 3 - 2 * p });
           const subP = Math.max(0, Math.min(1, (p - 0.35) / 0.55));
           gsap.set(subtitle, { opacity: subP });
         },
@@ -43,20 +44,23 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      data-guide="HeroSection"
       className="relative flex h-screen w-full flex-col items-center justify-center bg-black"
     >
-      <h1
-        ref={titleRef}
-        className="text-8xl font-bold tracking-tight md:text-9xl"
-      >
-        NOVA
-      </h1>
+      <div ref={logoRef}>
+        <Image
+          src="/Asset 3.png"
+          alt="PROTEA"
+          width={500}
+          height={500}
+          priority
+          className="h-auto w-48 md:w-64"
+        />
+      </div>
       <p
         ref={subtitleRef}
         className="mt-6 text-xl font-medium tracking-wide text-white/90 md:text-2xl"
       >
-        Pure Sound. Zero Limits.
+        Pure Protein. Zero Compromise.
       </p>
     </section>
   );
