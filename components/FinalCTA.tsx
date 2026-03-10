@@ -18,8 +18,7 @@ export default function FinalCTA() {
     if (!section || !title || !button) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(title, { willChange: "transform" });
-      gsap.set(button, { willChange: "opacity" });
+      // GSAP auto-promotes to GPU when animating transforms
 
       gsap.fromTo(
         title,

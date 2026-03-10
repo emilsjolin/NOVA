@@ -19,8 +19,8 @@ export default function HeroSection() {
     if (!section || !logo || !subtitle) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(logo, { willChange: "transform", scale: 3 });
-      gsap.set(subtitle, { willChange: "opacity", opacity: 0 });
+      gsap.set(logo, { scale: 3 });
+      gsap.set(subtitle, { opacity: 0 });
 
       ScrollTrigger.create({
         trigger: section,

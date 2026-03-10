@@ -29,7 +29,7 @@ export default function HorizontalGallery() {
     const count = panelEls.length;
     if (count === 0) return;
 
-    panelEls.forEach((el) => gsap.set(el, { willChange: "transform" }));
+    // GSAP auto-promotes to GPU when animating transforms
 
     // Scroll distance multiplier: higher = more vertical scroll needed = slower horizontal movement
     const scrollDistanceMultiplier = 4.5;
@@ -57,7 +57,7 @@ export default function HorizontalGallery() {
         scroller: document.body,
         onUpdate: (self) => {
           const eased = remapProgress(self.progress);
-          const xPercent = -eased * 100 * (count - 1);
+          const xPercent = -eased * 100 * (count - 1) / count;
           gsap.set(panels, { xPercent });
         },
       });

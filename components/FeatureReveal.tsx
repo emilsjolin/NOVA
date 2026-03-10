@@ -33,7 +33,7 @@ export default function FeatureReveal() {
       const fadeOutRatio = 0.15;
 
       items.forEach((el) => {
-        gsap.set(el, { willChange: "transform, opacity", opacity: 0, y: 50 });
+        gsap.set(el, { opacity: 0, y: 50 });
       });
 
       ScrollTrigger.create({
