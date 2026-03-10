@@ -61,7 +61,7 @@ export default function FinalCTA() {
     <section
       ref={sectionRef}
 
-      className="relative z-10 flex min-h-screen w-full flex-col items-center justify-start gap-12 bg-black pt-8 pb-12"
+      className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center gap-12 bg-black"
     >
       <h2
         ref={titleRef}
@@ -71,7 +71,7 @@ export default function FinalCTA() {
       </h2>
       <a
         ref={buttonRef}
-        href="#"
+        href="/shop"
         className="rounded-full border-2 border-white bg-transparent px-10 py-4 text-lg font-medium text-white transition-colors hover:bg-white hover:text-black"
       >
         Order Now
