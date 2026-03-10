@@ -1,13 +1,14 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 
 const LINKS = [
   { label: "Home", href: "/" },
-  { label: "Shop", href: "#" },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
+  { label: "Shop", href: "/shop" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 // Center of the 48px button at top-5 (20px) left-5 (20px) = 44px, 44px
@@ -150,7 +151,7 @@ export default function BlobMenu() {
           className="flex h-full w-full flex-col items-center justify-center gap-8"
         >
           {LINKS.map((link) => (
-            <a
+            <Link
               key={link.label}
               data-menu-link
               href={link.href}
@@ -159,7 +160,7 @@ export default function BlobMenu() {
               style={{ opacity: 0 }}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
       </div>
