@@ -22,7 +22,6 @@ export default function ParallaxGrid() {
 
     const ctx = gsap.context(() => {
       boxes.forEach((el, i) => {
-        // GSAP auto-promotes to GPU when animating transforms
         const speed = SPEEDS[i] ?? 0.1;
         const yMove = 80 * (speed >= 0 ? 1 : -1);
 
@@ -51,7 +50,6 @@ export default function ParallaxGrid() {
   return (
     <section
       ref={sectionRef}
-
       className="relative w-full bg-[#0a0a0a] py-12 md:py-16"
     >
       <div

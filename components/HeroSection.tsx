@@ -18,10 +18,10 @@ export default function HeroSection() {
     const subtitle = subtitleRef.current;
     if (!section || !logo || !subtitle) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(logo, { scale: 3 });
-      gsap.set(subtitle, { opacity: 0 });
+    logo.style.transform = "scale(3)";
+    subtitle.style.opacity = "0";
 
+    const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
@@ -31,9 +31,9 @@ export default function HeroSection() {
         scroller: document.body,
         onUpdate: (self) => {
           const p = self.progress;
-          gsap.set(logo, { scale: 3 - 2 * p });
+          logo.style.transform = `scale(${3 - 2 * p})`;
           const subP = Math.max(0, Math.min(1, (p - 0.35) / 0.55));
-          gsap.set(subtitle, { opacity: subP });
+          subtitle.style.opacity = String(subP);
         },
       });
     }, section);

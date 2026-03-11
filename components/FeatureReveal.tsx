@@ -23,19 +23,23 @@ export default function FeatureReveal() {
     const video = videoRef.current;
     if (!section || !headlines) return;
 
-    const items = headlines.querySelectorAll("[data-headline]");
+    const items = Array.from(
+      headlines.querySelectorAll<HTMLElement>("[data-headline]")
+    );
     if (!items.length) return;
 
+    const n = items.length;
+    const segmentSize = 1 / n;
+    const fadeInRatio = 0.15;
+    const fadeOutRatio = 0.15;
+
+    items.forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(50px)";
+      el.style.visibility = "hidden";
+    });
+
     const ctx = gsap.context(() => {
-      const n = items.length;
-      const segmentSize = 1 / n;
-      const fadeInRatio = 0.15;
-      const fadeOutRatio = 0.15;
-
-      items.forEach((el) => {
-        gsap.set(el, { opacity: 0, y: 50 });
-      });
-
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
@@ -45,25 +49,40 @@ export default function FeatureReveal() {
         scroller: document.body,
         onUpdate: (self) => {
           const p = self.progress;
+
           if (video && video.duration && Number.isFinite(video.duration)) {
             video.currentTime = p * video.duration;
           }
+
           items.forEach((el, i) => {
             const segStart = i * segmentSize;
             const local = (p - segStart) / segmentSize;
+
+            let opacity: number;
+            let y: number;
+
             if (local <= 0) {
-              gsap.set(el, { opacity: 0, y: 50 });
+              opacity = 0;
+              y = 50;
             } else if (local >= 1) {
-              gsap.set(el, { opacity: 0, y: -40 });
+              opacity = 0;
+              y = -40;
             } else if (local <= fadeInRatio) {
               const t = local / fadeInRatio;
-              gsap.set(el, { opacity: t, y: 50 - 50 * t });
+              opacity = t;
+              y = 50 - 50 * t;
             } else if (local >= 1 - fadeOutRatio) {
               const t = (local - (1 - fadeOutRatio)) / fadeOutRatio;
-              gsap.set(el, { opacity: 1 - t, y: -40 * t });
+              opacity = 1 - t;
+              y = -40 * t;
             } else {
-              gsap.set(el, { opacity: 1, y: 0 });
+              opacity = 1;
+              y = 0;
             }
+
+            el.style.opacity = String(opacity);
+            el.style.transform = `translateY(${y}px)`;
+            el.style.visibility = opacity > 0 ? "visible" : "hidden";
           });
         },
       });
@@ -75,7 +94,6 @@ export default function FeatureReveal() {
   return (
     <section
       ref={sectionRef}
-
       className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black"
     >
       <div className="absolute inset-0 z-0">
@@ -97,7 +115,7 @@ export default function FeatureReveal() {
             key={i}
             data-headline
             className="absolute text-center text-6xl font-bold leading-tight text-white md:text-7xl"
-            style={{ opacity: 0 }}
+            style={{ opacity: 0, visibility: "hidden" }}
           >
             {text}
           </div>

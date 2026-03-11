@@ -18,8 +18,6 @@ export default function FinalCTA() {
     if (!section || !title || !button) return;
 
     const ctx = gsap.context(() => {
-      // GSAP auto-promotes to GPU when animating transforms
-
       gsap.fromTo(
         title,
         { scale: 0.5 },
@@ -59,7 +57,6 @@ export default function FinalCTA() {
   return (
     <section
       ref={sectionRef}
-
       className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center gap-12 bg-black"
     >
       <h2

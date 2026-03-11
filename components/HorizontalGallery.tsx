@@ -29,14 +29,8 @@ export default function HorizontalGallery() {
     const count = panelEls.length;
     if (count === 0) return;
 
-    // GSAP auto-promotes to GPU when animating transforms
-
-    // Scroll distance multiplier: higher = more vertical scroll needed = slower horizontal movement
     const scrollDistanceMultiplier = 4.5;
 
-    // Remap linear scroll progress so panels slow down when centered.
-    // Uses a sum-of-sines approach: each segment eases with smoothstep,
-    // creating a plateau at each panel center.
     const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
     const remapProgress = (p: number) => {
@@ -58,7 +52,7 @@ export default function HorizontalGallery() {
         onUpdate: (self) => {
           const eased = remapProgress(self.progress);
           const xPercent = -eased * 100 * (count - 1) / count;
-          gsap.set(panels, { xPercent });
+          panels.style.transform = `translateX(${xPercent}%)`;
         },
       });
     }, section);
@@ -69,7 +63,6 @@ export default function HorizontalGallery() {
   return (
     <section
       ref={sectionRef}
-
       className="relative h-screen w-full overflow-hidden bg-black"
     >
       <div ref={wrapperRef} className="absolute inset-0">
@@ -82,7 +75,6 @@ export default function HorizontalGallery() {
             <div
               key={i}
               data-panel
-
               className={`flex h-full w-screen flex-shrink-0 items-center justify-center bg-gradient-to-br ${panel.color}`}
             >
               <span className="text-5xl font-bold text-white md:text-6xl">
