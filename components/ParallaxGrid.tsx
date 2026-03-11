@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const SPEEDS = [0.15, -0.1, 0.2];
 
 export default function ParallaxGrid() {
@@ -37,7 +35,6 @@ export default function ParallaxGrid() {
               start: "top bottom",
               end: "bottom top",
               scrub: 1,
-              scroller: document.body,
             },
           }
         );

@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const HEADLINES = [
   "Crafted from Clean Ingredients",
   "Zero Sugar. Full Flavor.",
@@ -29,9 +27,11 @@ export default function FeatureReveal() {
     if (!items.length) return;
 
     const n = items.length;
+    // Each headline gets an exclusive zone with guard gaps between them.
+    // Layout per segment: [gap][fadeIn][hold][fadeOut][gap]
+    const gapRatio = 0.03;    // 3% gap between segments — no headline visible
+    const fadeRatio = 0.12;   // 12% fade in / out within each segment
     const segmentSize = 1 / n;
-    const fadeInRatio = 0.15;
-    const fadeOutRatio = 0.15;
 
     items.forEach((el) => {
       el.style.opacity = "0";
@@ -46,7 +46,6 @@ export default function FeatureReveal() {
         end: "400% top",
         pin: true,
         scrub: 1,
-        scroller: document.body,
         onUpdate: (self) => {
           const p = self.progress;
 
@@ -55,34 +54,39 @@ export default function FeatureReveal() {
           }
 
           items.forEach((el, i) => {
-            const segStart = i * segmentSize;
-            const local = (p - segStart) / segmentSize;
+            const segStart = i * segmentSize + gapRatio;
+            const segEnd = (i + 1) * segmentSize - gapRatio;
+            const segLen = segEnd - segStart;
+
+            // Normalize progress within this headline's active zone
+            const local = (p - segStart) / segLen;
 
             let opacity: number;
             let y: number;
 
-            if (local <= 0) {
+            if (local <= 0 || local >= 1) {
+              // Outside this headline's zone — fully hidden
               opacity = 0;
-              y = 50;
-            } else if (local >= 1) {
-              opacity = 0;
-              y = -40;
-            } else if (local <= fadeInRatio) {
-              const t = local / fadeInRatio;
+              y = local <= 0 ? 50 : -40;
+            } else if (local <= fadeRatio) {
+              // Fading in
+              const t = local / fadeRatio;
               opacity = t;
               y = 50 - 50 * t;
-            } else if (local >= 1 - fadeOutRatio) {
-              const t = (local - (1 - fadeOutRatio)) / fadeOutRatio;
+            } else if (local >= 1 - fadeRatio) {
+              // Fading out
+              const t = (local - (1 - fadeRatio)) / fadeRatio;
               opacity = 1 - t;
               y = -40 * t;
             } else {
+              // Fully visible
               opacity = 1;
               y = 0;
             }
 
             el.style.opacity = String(opacity);
             el.style.transform = `translateY(${y}px)`;
-            el.style.visibility = opacity > 0 ? "visible" : "hidden";
+            el.style.visibility = opacity > 0.001 ? "visible" : "hidden";
           });
         },
       });

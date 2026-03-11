@@ -32,6 +32,9 @@ export default function CartPanel() {
       />
       <div
         ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Shopping cart"
         className="fixed right-0 top-0 z-[90] flex h-full w-full max-w-md flex-col bg-[#0a0a0a] border-l border-white/10"
         style={{ transform: "translateX(100%)" }}
       >
@@ -39,6 +42,7 @@ export default function CartPanel() {
           <h2 className="text-lg font-bold tracking-wide">Your Cart</h2>
           <button
             onClick={() => setIsCartOpen(false)}
+            aria-label="Close cart"
             className="text-white/60 transition-colors hover:text-white"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

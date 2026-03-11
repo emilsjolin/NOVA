@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const SPECS = [
   { value: 20, suffix: "g", label: "Protein" },
   { value: 70, suffix: "", label: "Calories" },
@@ -41,7 +39,6 @@ export default function SpecsCounter() {
               start: "top 85%",
               end: "bottom 60%",
               scrub: 1,
-              scroller: document.body,
             },
           }
         );

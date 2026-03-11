@@ -116,6 +116,7 @@ export default function BlobMenu() {
         }}
         className="fixed top-5 left-5 z-[70] flex h-12 w-12 flex-col items-center justify-center gap-[6px] rounded-full"
         aria-label="Menu"
+        aria-expanded={isOpen}
       >
         <span
           className="block h-[2px] w-6 transition-all duration-300 origin-center"
@@ -143,6 +144,8 @@ export default function BlobMenu() {
       {/* White blob overlay */}
       <div
         ref={blobRef}
+        role="navigation"
+        aria-label="Main menu"
         className="fixed inset-0 z-[60] bg-white"
         style={{ clipPath: `circle(0px at ${ORIGIN})`, pointerEvents: isOpen ? "auto" : "none" }}
       >

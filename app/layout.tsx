@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { CartProvider } from "@/context/CartContext";
-import CartIcon from "@/components/CartIcon";
+import BlobMenu from "@/components/BlobMenu";
+import NavButtons from "@/components/NavButtons";
 import CartPanel from "@/components/CartPanel";
 
 export const metadata: Metadata = {
@@ -19,7 +20,8 @@ export default function RootLayout({
     <html lang="en" className="antialiased">
       <body className="min-h-screen bg-black text-white font-sans">
         <CartProvider>
-          <CartIcon />
+          <BlobMenu />
+          <NavButtons />
           <CartPanel />
           <SmoothScroll>{children}</SmoothScroll>
         </CartProvider>

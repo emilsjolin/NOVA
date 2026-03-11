@@ -26,9 +26,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   if (!product) return null;
 
   const handleAdd = () => {
-    for (let i = 0; i < quantity; i++) {
-      addItem(product.slug, product.name, product.price);
-    }
+    addItem(product.slug, product.name, product.price, quantity);
     onClose();
   };
 
@@ -41,10 +39,13 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     <div ref={backdropRef} className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 backdrop-blur-sm px-6" onClick={handleBackdropClose}>
       <div
         ref={cardRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${product.name} details`}
         className="relative w-full max-w-lg rounded-2xl bg-[#0a0a0a] border border-white/10 p-8"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={handleBackdropClose} className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors">
+        <button onClick={handleBackdropClose} aria-label="Close" className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>

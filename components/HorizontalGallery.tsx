@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const PANELS = [
   { color: "from-violet-900 to-indigo-950", text: "Taste" },
   { color: "from-amber-900 to-orange-950", text: "Ingredients" },
@@ -48,7 +46,6 @@ export default function HorizontalGallery() {
         end: () => `+=${wrapper.offsetWidth * scrollDistanceMultiplier}`,
         pin: true,
         scrub: 2,
-        scroller: document.body,
         onUpdate: (self) => {
           const eased = remapProgress(self.progress);
           const xPercent = -eased * 100 * (count - 1) / count;

@@ -5,8 +5,6 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
@@ -28,7 +26,6 @@ export default function HeroSection() {
         end: "200% top",
         pin: true,
         scrub: 1,
-        scroller: document.body,
         onUpdate: (self) => {
           const p = self.progress;
           logo.style.transform = `scale(${3 - 2 * p})`;
