@@ -53,25 +53,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     ScrollTrigger.scrollerProxy(body, scrollProxy);
 
     let didRefreshOnScroll = false;
-    const isChrome = typeof navigator !== "undefined" && /Chrome\//i.test(navigator.userAgent) && !/Edg\//i.test(navigator.userAgent);
-    let stUpdateScheduled = false;
     const update = (time: number) => {
       lenis.raf(time * 1000);
       if (!didRefreshOnScroll && lenis.scroll > 10) {
         didRefreshOnScroll = true;
         ScrollTrigger.refresh();
       }
-      if (isChrome) {
-        if (!stUpdateScheduled) {
-          stUpdateScheduled = true;
-          requestAnimationFrame(() => {
-            stUpdateScheduled = false;
-            ScrollTrigger.update();
-          });
-        }
-      } else {
-        ScrollTrigger.update();
-      }
+      ScrollTrigger.update();
     };
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);

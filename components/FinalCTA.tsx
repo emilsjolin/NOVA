@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -18,9 +17,6 @@ export default function FinalCTA() {
     if (!section || !title || !button) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(title, { willChange: "transform" });
-      gsap.set(button, { willChange: "opacity" });
-
       gsap.fromTo(
         title,
         { scale: 0.5 },
@@ -32,7 +28,6 @@ export default function FinalCTA() {
             start: "top bottom",
             end: "60% center",
             scrub: 1,
-            scroller: document.body,
           },
         }
       );
@@ -48,7 +43,6 @@ export default function FinalCTA() {
             start: "40% center",
             end: "70% center",
             scrub: 1,
-            scroller: document.body,
           },
         }
       );
@@ -60,8 +54,7 @@ export default function FinalCTA() {
   return (
     <section
       ref={sectionRef}
-
-      className="relative z-10 flex min-h-screen w-full flex-col items-center justify-start gap-12 bg-black pt-8 pb-12"
+      className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center gap-12 bg-black"
     >
       <h2
         ref={titleRef}
@@ -69,13 +62,13 @@ export default function FinalCTA() {
       >
         Experience PROTEA
       </h2>
-      <a
+      <Link
         ref={buttonRef}
-        href="#"
+        href="/shop"
         className="rounded-full border-2 border-white bg-transparent px-10 py-4 text-lg font-medium text-white transition-colors hover:bg-white hover:text-black"
       >
         Order Now
-      </a>
+      </Link>
     </section>
   );
 }

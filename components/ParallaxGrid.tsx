@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const SPEEDS = [0.15, -0.1, 0.2];
 
 export default function ParallaxGrid() {
@@ -22,7 +20,6 @@ export default function ParallaxGrid() {
 
     const ctx = gsap.context(() => {
       boxes.forEach((el, i) => {
-        gsap.set(el, { willChange: "transform" });
         const speed = SPEEDS[i] ?? 0.1;
         const yMove = 80 * (speed >= 0 ? 1 : -1);
 
@@ -38,7 +35,6 @@ export default function ParallaxGrid() {
               start: "top bottom",
               end: "bottom top",
               scrub: 1,
-              scroller: document.body,
             },
           }
         );
@@ -51,7 +47,6 @@ export default function ParallaxGrid() {
   return (
     <section
       ref={sectionRef}
-
       className="relative w-full bg-[#0a0a0a] py-12 md:py-16"
     >
       <div

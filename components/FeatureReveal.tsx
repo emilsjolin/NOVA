@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const HEADLINES = [
   "Crafted from Clean Ingredients",
   "Zero Sugar. Full Flavor.",
@@ -23,47 +21,72 @@ export default function FeatureReveal() {
     const video = videoRef.current;
     if (!section || !headlines) return;
 
-    const items = headlines.querySelectorAll("[data-headline]");
+    const items = Array.from(
+      headlines.querySelectorAll<HTMLElement>("[data-headline]")
+    );
     if (!items.length) return;
 
+    const n = items.length;
+    // Each headline gets an exclusive zone with guard gaps between them.
+    // Layout per segment: [gap][fadeIn][hold][fadeOut][gap]
+    const gapRatio = 0.03;    // 3% gap between segments — no headline visible
+    const fadeRatio = 0.12;   // 12% fade in / out within each segment
+    const segmentSize = 1 / n;
+
+    items.forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(50px)";
+      el.style.visibility = "hidden";
+    });
+
     const ctx = gsap.context(() => {
-      const n = items.length;
-      const segmentSize = 1 / n;
-      const fadeInRatio = 0.15;
-      const fadeOutRatio = 0.15;
-
-      items.forEach((el) => {
-        gsap.set(el, { willChange: "transform, opacity", opacity: 0, y: 50 });
-      });
-
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
         end: "400% top",
         pin: true,
         scrub: 1,
-        scroller: document.body,
         onUpdate: (self) => {
           const p = self.progress;
+
           if (video && video.duration && Number.isFinite(video.duration)) {
             video.currentTime = p * video.duration;
           }
+
           items.forEach((el, i) => {
-            const segStart = i * segmentSize;
-            const local = (p - segStart) / segmentSize;
-            if (local <= 0) {
-              gsap.set(el, { opacity: 0, y: 50 });
-            } else if (local >= 1) {
-              gsap.set(el, { opacity: 0, y: -40 });
-            } else if (local <= fadeInRatio) {
-              const t = local / fadeInRatio;
-              gsap.set(el, { opacity: t, y: 50 - 50 * t });
-            } else if (local >= 1 - fadeOutRatio) {
-              const t = (local - (1 - fadeOutRatio)) / fadeOutRatio;
-              gsap.set(el, { opacity: 1 - t, y: -40 * t });
+            const segStart = i * segmentSize + gapRatio;
+            const segEnd = (i + 1) * segmentSize - gapRatio;
+            const segLen = segEnd - segStart;
+
+            // Normalize progress within this headline's active zone
+            const local = (p - segStart) / segLen;
+
+            let opacity: number;
+            let y: number;
+
+            if (local <= 0 || local >= 1) {
+              // Outside this headline's zone — fully hidden
+              opacity = 0;
+              y = local <= 0 ? 50 : -40;
+            } else if (local <= fadeRatio) {
+              // Fading in
+              const t = local / fadeRatio;
+              opacity = t;
+              y = 50 - 50 * t;
+            } else if (local >= 1 - fadeRatio) {
+              // Fading out
+              const t = (local - (1 - fadeRatio)) / fadeRatio;
+              opacity = 1 - t;
+              y = -40 * t;
             } else {
-              gsap.set(el, { opacity: 1, y: 0 });
+              // Fully visible
+              opacity = 1;
+              y = 0;
             }
+
+            el.style.opacity = String(opacity);
+            el.style.transform = `translateY(${y}px)`;
+            el.style.visibility = opacity > 0.001 ? "visible" : "hidden";
           });
         },
       });
@@ -75,7 +98,6 @@ export default function FeatureReveal() {
   return (
     <section
       ref={sectionRef}
-
       className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black"
     >
       <div className="absolute inset-0 z-0">
@@ -97,7 +119,7 @@ export default function FeatureReveal() {
             key={i}
             data-headline
             className="absolute text-center text-6xl font-bold leading-tight text-white md:text-7xl"
-            style={{ opacity: 0 }}
+            style={{ opacity: 0, visibility: "hidden" }}
           >
             {text}
           </div>

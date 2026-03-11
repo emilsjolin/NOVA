@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import { CartProvider } from "@/context/CartContext";
+import BlobMenu from "@/components/BlobMenu";
+import NavButtons from "@/components/NavButtons";
+import CartPanel from "@/components/CartPanel";
 
 export const metadata: Metadata = {
-  title: "NOVA - Pure Sound. Zero Limits.",
-  description: "Premium wireless headphone",
+  title: "PROTEA — Pure Protein. Zero Compromise.",
+  description: "Premium protein drink crafted from clean ingredients.",
 };
 
 export default function RootLayout({
@@ -15,7 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="antialiased">
       <body className="min-h-screen bg-black text-white font-sans">
-        <SmoothScroll>{children}</SmoothScroll>
+        <CartProvider>
+          <BlobMenu />
+          <NavButtons />
+          <CartPanel />
+          <SmoothScroll>{children}</SmoothScroll>
+        </CartProvider>
       </body>
     </html>
   );

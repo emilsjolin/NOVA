@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const PANELS = [
   { color: "from-violet-900 to-indigo-950", text: "Taste" },
   { color: "from-amber-900 to-orange-950", text: "Ingredients" },
@@ -29,14 +27,8 @@ export default function HorizontalGallery() {
     const count = panelEls.length;
     if (count === 0) return;
 
-    panelEls.forEach((el) => gsap.set(el, { willChange: "transform" }));
-
-    // Scroll distance multiplier: higher = more vertical scroll needed = slower horizontal movement
     const scrollDistanceMultiplier = 4.5;
 
-    // Remap linear scroll progress so panels slow down when centered.
-    // Uses a sum-of-sines approach: each segment eases with smoothstep,
-    // creating a plateau at each panel center.
     const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
     const remapProgress = (p: number) => {
@@ -54,11 +46,10 @@ export default function HorizontalGallery() {
         end: () => `+=${wrapper.offsetWidth * scrollDistanceMultiplier}`,
         pin: true,
         scrub: 2,
-        scroller: document.body,
         onUpdate: (self) => {
           const eased = remapProgress(self.progress);
-          const xPercent = -eased * 100 * (count - 1);
-          gsap.set(panels, { xPercent });
+          const xPercent = -eased * 100 * (count - 1) / count;
+          panels.style.transform = `translateX(${xPercent}%)`;
         },
       });
     }, section);
@@ -69,7 +60,6 @@ export default function HorizontalGallery() {
   return (
     <section
       ref={sectionRef}
-
       className="relative h-screen w-full overflow-hidden bg-black"
     >
       <div ref={wrapperRef} className="absolute inset-0">
@@ -82,7 +72,6 @@ export default function HorizontalGallery() {
             <div
               key={i}
               data-panel
-
               className={`flex h-full w-screen flex-shrink-0 items-center justify-center bg-gradient-to-br ${panel.color}`}
             >
               <span className="text-5xl font-bold text-white md:text-6xl">
